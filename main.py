@@ -30,10 +30,22 @@ def save_file(pizza_no_chosen, inputName, total_slices):
     #    for slide in slideshow:
    #         out.write(str(slide) + "\n")
 
+def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
+    pizza_no_chosen = {}
+    for i in range(start, len(slices_in_pizza)):                
+        temp = total_slices + int(slices_in_pizza[i])
+        if temp <= max_slices:
+            total_slices = temp
+            pizza_no_chosen[i]=slices_in_pizza[i]
+            #print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
+        #else:
+            #print("skipped: {}".format(slices_in_pizza[i]))
+    return total_slices, pizza_no_chosen
+
 def main_run():
     arguments = [x.lower() for x in sys.argv[1::]]
     if len(arguments) == 0:
-        letter = "f"
+        letter = "b"
     else:
         letter = arguments[0]
 
@@ -44,36 +56,56 @@ def main_run():
     inputName = inputFileNames[letter]
     try:
         with open("input/{}.in".format(inputName), "r") as inputFile:
-            print("yes")
+            #print("yes")
             file = inputFile.readlines()
             line1 = file[0]
             max_slices = int(line1.split(" ")[0])
             different_types_of_pizza = line1[1]
             slices_in_pizza = (file[1].split(" "))
             slices_in_pizza[-1] = slices_in_pizza[-1].strip()
-            print("max_slices: {}, pizza_types: {}".format(max_slices, different_types_of_pizza))
-            print("slices_in_pizza: {}".format(slices_in_pizza))
+            #print("max_slices: {}, pizza_types: {}".format(max_slices, different_types_of_pizza))
+            #print("slices_in_pizza: {}".format(slices_in_pizza))
 
             total_slices = 0
             pizza_no_chosen = {}
             #slices_in_pizza = reversed(slices_in_pizza)
-            i = len(slices_in_pizza) - 1
-            while i >= 0:
-                temp = total_slices + int(slices_in_pizza[i])
-                if temp <= max_slices:
-                    total_slices = temp
-                    pizza_no_chosen[i]=slices_in_pizza[i]
-                    i-=1
-                else:
-                    i-=1
-            i = 0
-            lastElem = list(pizza_no_chosen.keys())[-1]
-            pizza_no_chosen2 = pizza_no_chosen
-            for i in range(len(slices_in_pizza)-lastElem):
-                pizza_no_chosen2.pop
-
-            print("total_slices: {}".format(total_slices))
-            print("pizzas_no_chosen: {}".format(pizza_no_chosen))
+            #i = 0
+            #while i <= len(slices_in_pizza) - 1:
+            start = 0
+            output = {}
+            while (start<len(slices_in_pizza)-1):
+                total_slices, new_pizza_no_chosen = computeLowerSums(max_slices, start, total_slices, slices_in_pizza)
+                pizza_no_chosen.update(new_pizza_no_chosen)
+                #print("total_slices: {}".format(total_slices))
+                #print("pizzas_no_chosen: {}".format(pizza_no_chosen))
+                output[total_slices] = pizza_no_chosen
+                
+                lastKey = list(pizza_no_chosen)[-1]
+                lastVal = pizza_no_chosen.pop(lastKey)
+                total_slices = total_slices-int(lastVal)
+                start = lastKey+1
+            #pizza_no_chosen2 = pizza_no_chosen
+            #lastKey = list(pizza_no_chosen)[-1]
+            #lastVal = pizza_no_chosen2.pop(lastKey)
+            #print("lastKey: {}, lastVal: {}".format(lastKey, lastVal))
+            
+            #total_slices2 = total_slices-int(lastVal)
+            #print("total_slices2: {}".format(total_slices2))
+            #i = 0
+            
+            #for i in range(len(slices_in_pizza)-lastKey+1, len(slices_in_pizza)):
+            #    temp = total_slices2 + int(slices_in_pizza[i])
+            #    if temp <= max_slices:
+            #        total_slices2 = temp
+            #        pizza_no_chosen2[i]=slices_in_pizza[i]
+            #        print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
+            #    else:
+            #        print("skipped: {}".format(slices_in_pizza[i]))
+            #    print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
+           # print("total_slices2: {}".format(total_slices2))
+           # print(pizza_no_chosen2)
+            #print("total_slices: {}".format(total_slices))
+            #print("pizzas_no_chosen: {}".format(pizza_no_chosen))
 
             
             #for line in inputFile:
