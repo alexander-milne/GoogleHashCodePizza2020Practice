@@ -11,7 +11,8 @@ inputFileNames = {
     "b": "b_small",
     "c": "c_medium",
     "d": "d_quite_big",
-    "e": "e_also_big"
+    "e": "e_also_big",
+    "f": "f_alex_test"
 }
 
 folder = ("/out")
@@ -32,7 +33,7 @@ def save_file(pizza_no_chosen, inputName, total_slices):
 def main_run():
     arguments = [x.lower() for x in sys.argv[1::]]
     if len(arguments) == 0:
-        letter = "d"
+        letter = "f"
     else:
         letter = arguments[0]
 
@@ -65,6 +66,11 @@ def main_run():
                     i-=1
                 else:
                     i-=1
+            i = 0
+            lastElem = list(pizza_no_chosen.keys())[-1]
+            pizza_no_chosen2 = pizza_no_chosen
+            for i in range(len(slices_in_pizza)-lastElem):
+                pizza_no_chosen2.pop
 
             print("total_slices: {}".format(total_slices))
             print("pizzas_no_chosen: {}".format(pizza_no_chosen))
