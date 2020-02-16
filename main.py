@@ -45,7 +45,7 @@ def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
 def main_run():
     arguments = [x.lower() for x in sys.argv[1::]]
     if len(arguments) == 0:
-        letter = "b"
+        letter = "e"
     else:
         letter = arguments[0]
 
@@ -72,68 +72,29 @@ def main_run():
             #i = 0
             #while i <= len(slices_in_pizza) - 1:
             start = 0
-            output = {}
+            outputs = {}
             while (start<len(slices_in_pizza)-1):
                 total_slices, new_pizza_no_chosen = computeLowerSums(max_slices, start, total_slices, slices_in_pizza)
                 pizza_no_chosen.update(new_pizza_no_chosen)
                 #print("total_slices: {}".format(total_slices))
                 #print("pizzas_no_chosen: {}".format(pizza_no_chosen))
-                output[total_slices] = pizza_no_chosen
+                outputs[total_slices] = pizza_no_chosen
                 
                 lastKey = list(pizza_no_chosen)[-1]
                 lastVal = pizza_no_chosen.pop(lastKey)
                 total_slices = total_slices-int(lastVal)
                 start = lastKey+1
-            #pizza_no_chosen2 = pizza_no_chosen
-            #lastKey = list(pizza_no_chosen)[-1]
-            #lastVal = pizza_no_chosen2.pop(lastKey)
-            #print("lastKey: {}, lastVal: {}".format(lastKey, lastVal))
-            
-            #total_slices2 = total_slices-int(lastVal)
-            #print("total_slices2: {}".format(total_slices2))
-            #i = 0
-            
-            #for i in range(len(slices_in_pizza)-lastKey+1, len(slices_in_pizza)):
-            #    temp = total_slices2 + int(slices_in_pizza[i])
-            #    if temp <= max_slices:
-            #        total_slices2 = temp
-            #        pizza_no_chosen2[i]=slices_in_pizza[i]
-            #        print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
-            #    else:
-            #        print("skipped: {}".format(slices_in_pizza[i]))
-            #    print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
-           # print("total_slices2: {}".format(total_slices2))
-           # print(pizza_no_chosen2)
-            #print("total_slices: {}".format(total_slices))
-            #print("pizzas_no_chosen: {}".format(pizza_no_chosen))
-
-            
-            #for line in inputFile:
-           #     if (lineNumber == 0):
-           #         line1 = line.split(" ")
-           #         max_slices = line1[0]
-           #         different_types_of_pizza = line1[1]
-                    
-            #    else:
-            #        slices_in_pizza = line.split(" ")
-            #    lineNumber += 1
-           # print("max_slices: {}, pizza_types: {}".format(max_slices, different_types_of_pizza))
-           # print("slices_in_pizza: {}".format(slices_in_pizza))
-
-            #photos = []
-            #lineNumber = 0
-            #for line in file:
-                #if (lineNumber != 0):
-                    #photos.append(Photo(lineNumber-1, line))
-                #lineNumber += 1
+            print("keys: {}".format(list(outputs.keys())))
+            max_score = max(list(outputs.keys()))
+            #print("max score key: {}".format(max_score))
+            #print(outputs[max_score])
+           #print("max socre: {}, values: {}".format(max_score, outputs[outputs])
             
     except IOError:
-        print("!!! {}.txt NOT FOUND IN INPUT FOLDER !!!".format(inputName))
+        print("!!! {}.in NOT FOUND IN INPUT FOLDER !!!".format(inputName))
         exit()
 
-    save_file(pizza_no_chosen, inputName, total_slices)
+    save_file(outputs[max_score], inputName, max_score)
     
-
-
 if __name__ == "__main__":
     main_run()
