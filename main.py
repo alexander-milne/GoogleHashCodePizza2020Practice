@@ -32,6 +32,7 @@ def save_file(pizza_no_chosen, inputName, total_slices):
 
 def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
     pizza_no_chosen = {}
+
     for i in range(start, len(slices_in_pizza)):                
         temp = total_slices + int(slices_in_pizza[i])
         if temp <= max_slices:
