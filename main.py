@@ -43,6 +43,21 @@ def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
             #print("skipped: {}".format(slices_in_pizza[i]))
     return total_slices, pizza_no_chosen
 
+def computeHigherSums(max_slices, start, total_slices, slices_in_pizza):
+    pizza_no_chosen = {}
+
+    #slices_in_pizza = reversed(slices_in_pizza)
+    i = len(slices_in_pizza) - 1
+    while i >= 0:
+        temp = total_slices + int(slices_in_pizza[i])
+        if temp <= max_slices:
+            total_slices = temp
+            izza_no_chosen[i]=slices_in_pizza[i]
+            i-=1
+        else:
+            i-=1
+    return total_slices, pizza_no_chosen
+
 def main_run():
     arguments = [x.lower() for x in sys.argv[1::]]
     if len(arguments) == 0:
