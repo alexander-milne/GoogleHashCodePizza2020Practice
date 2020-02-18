@@ -31,6 +31,7 @@ def save_file(pizza_no_chosen, inputName, total_slices):
    #         out.write(str(slide) + "\n")
 
 def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
+    #print("start in computeLowerSums: {}".format(start))
     pizza_no_chosen = {}
 
     for i in range(start, len(slices_in_pizza)):                
@@ -38,18 +39,18 @@ def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
         if temp <= max_slices:
             total_slices = temp
             pizza_no_chosen[i]=slices_in_pizza[i]
-            #print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
-        #else:
-            #print("skipped: {}".format(slices_in_pizza[i]))
+            print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
+        else:
+            print("skipped: {}".format(slices_in_pizza[i]))
     return total_slices, pizza_no_chosen
 
-def moreComputeLowerSums(max_slices, slices_in_pizza):
+def moreComputeLowerSums(max_slices, start, slices_in_pizza):
+    #print("start in moreComputeLowerSums: {}".format(start))
     total_slices = 0
     pizza_no_chosen = {}
     #slices_in_pizza = reversed(slices_in_pizza)
     #i = 0
     #while i <= len(slices_in_pizza) - 1:
-    start = 0
     outputs = {}
     while (start<len(slices_in_pizza)-1):
         total_slices, new_pizza_no_chosen = computeLowerSums(max_slices, start, total_slices, slices_in_pizza)
@@ -62,8 +63,21 @@ def moreComputeLowerSums(max_slices, slices_in_pizza):
         lastVal = pizza_no_chosen.pop(lastKey)
         total_slices = total_slices-int(lastVal)
         start = lastKey+1
-        print("keys: {}".format(list(outputs.keys())))
+        #print("keys: {}".format(list(outputs.keys())))
         max_score = max(list(outputs.keys()))
+    return max_score, outputs[max_score]
+
+def moreMoreComputeLowerSums(max_slices, slices_in_pizza):
+    pizza_no_chosen = {}
+    stop = round(len(slices_in_pizza)*0.001)
+    outputs = {}
+    for start in range(0, stop):
+        print("start in moreMoreComputeLowerSums: {}".format(start))
+        max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, start, slices_in_pizza)
+        outputs[max_score] = pizza_no_chosen
+    
+    print("moreMoreComputeLowerSums -> outputs dict, {}".format(outputs.keys()))
+    max_score = max(list(outputs.keys()))
     return max_score, outputs[max_score]
 
 def computeHigherSums(max_slices, slices_in_pizza):
@@ -84,7 +98,7 @@ def computeHigherSums(max_slices, slices_in_pizza):
 def main_run():
     arguments = [x.lower() for x in sys.argv[1::]]
     if len(arguments) == 0:
-        letter = "c"
+        letter = "e"
     else:
         letter = arguments[0]
 
@@ -102,9 +116,13 @@ def main_run():
             different_types_of_pizza = line1[1]
             slices_in_pizza = (file[1].split(" "))
             slices_in_pizza[-1] = slices_in_pizza[-1].strip()
-            
+            print("slices_in_pizza: \n{}".format(slices_in_pizza))
+            slices_in_pizza.reverse()
+            print("slices_in_pizza: \n{}".format(slices_in_pizza))
+
+            max_score, pizza_no_chosen = moreMoreComputeLowerSums(max_slices, slices_in_pizza)
             #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, slices_in_pizza)
-            max_score, pizza_no_chosen = computeHigherSums(max_slices, slices_in_pizza)
+            #max_score, pizza_no_chosen = computeHigherSums(max_slices, slices_in_pizza)
             print("score: {}".format(max_score))
     except IOError:
         print("!!! {}.in NOT FOUND IN INPUT FOLDER !!!".format(inputName))
