@@ -120,7 +120,7 @@ def main_run():
             slices_in_pizza.reverse()
             print("slices_in_pizza: \n{}".format(slices_in_pizza))
 
-            max_score, pizza_no_chosen = moreMoreComputeLowerSums(max_slices, slices_in_pizza)
+            max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, 0, slices_in_pizza)
             #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, slices_in_pizza)
             #max_score, pizza_no_chosen = computeHigherSums(max_slices, slices_in_pizza)
             print("score: {}".format(max_score))
