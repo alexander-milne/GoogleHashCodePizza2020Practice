@@ -17,6 +17,8 @@ inputFileNames = {
 
 folder = ("/out")
 
+alreadyComputedLowerSums= {}
+
 def save_file(pizza_no_chosen, inputName, total_slices):
     outputFileName = "{}/{}/{}_out_{}.out".format(__location__,folder, inputName, "score_" + str(total_slices))
     with open(outputFileName, "w") as out:
@@ -32,9 +34,12 @@ def save_file(pizza_no_chosen, inputName, total_slices):
 
 def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
     #print("start in computeLowerSums: {}".format(start))
+    if alreadyComputedLowerSums[start] != None:
+            return total_slices, pizza_no_chosen = alreadyComputedLowerSums[start]
+    
     pizza_no_chosen = {}
-
-    for i in range(start, len(slices_in_pizza)):                
+    for i in range(start, len(slices_in_pizza)):
+        
         temp = total_slices + int(slices_in_pizza[i])
         if temp <= max_slices:
             total_slices = temp
@@ -42,6 +47,8 @@ def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
             print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
         else:
             print("skipped: {}".format(slices_in_pizza[i]))
+
+    
     return total_slices, pizza_no_chosen
 
 def moreComputeLowerSums(max_slices, start, slices_in_pizza):
