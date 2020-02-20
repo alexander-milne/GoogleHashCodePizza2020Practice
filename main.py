@@ -21,7 +21,7 @@ def save_file(pizza_no_chosen, inputName, total_slices):
     outputFileName = "{}/{}/{}_out_{}.out".format(__location__,folder, inputName, "score_" + str(total_slices))
     with open(outputFileName, "w") as out:
         out.write('{}\n'.format(len(pizza_no_chosen)))
-        for value in pizza_no_chosen.keys():
+        for value in pizza_no_chosen:
             out.write('{} '.format(value))
         #for slide in slideshow:
          #   out.write(str(slide) + "\n")
@@ -39,9 +39,9 @@ def computeLowerSums(max_slices, start, total_slices, slices_in_pizza):
         if temp <= max_slices:
             total_slices = temp
             pizza_no_chosen[i]=slices_in_pizza[i]
-            print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
-        else:
-            print("skipped: {}".format(slices_in_pizza[i]))
+            #print("slices_in_pizza[{}]: {}".format(i, slices_in_pizza[i]))
+        #else:
+        #    print("skipped: {}".format(slices_in_pizza[i]))
     return total_slices, pizza_no_chosen
 
 def moreComputeLowerSums(max_slices, start, slices_in_pizza):
@@ -57,26 +57,35 @@ def moreComputeLowerSums(max_slices, start, slices_in_pizza):
         pizza_no_chosen.update(new_pizza_no_chosen)
         #print("total_slices: {}".format(total_slices))
         #print("pizzas_no_chosen: {}".format(pizza_no_chosen))
-        outputs[total_slices] = pizza_no_chosen
-                
+        save_pizza_slices = pizza_no_chosen.copy()
+        outputs[total_slices] = save_pizza_slices
         lastKey = list(pizza_no_chosen)[-1]
         lastVal = pizza_no_chosen.pop(lastKey)
         total_slices = total_slices-int(lastVal)
         start = lastKey+1
         #print("keys: {}".format(list(outputs.keys())))
         max_score = max(list(outputs.keys()))
+        #print("outputs: {}".format(outputs))
+
+    
+    #print("outputs: {}".format(outputs))
     return max_score, outputs[max_score]
 
 def moreMoreComputeLowerSums(max_slices, slices_in_pizza):
     pizza_no_chosen = {}
+    #stop = len(slices_in_pizza)-1
     stop = round(len(slices_in_pizza)*0.001)
+    if (stop<1):
+        stop = 1
+    
     outputs = {}
+
     for start in range(0, stop):
-        print("start in moreMoreComputeLowerSums: {}".format(start))
+        #print("start in moreMoreComputeLowerSums: {}".format(start))
         max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, start, slices_in_pizza)
         outputs[max_score] = pizza_no_chosen
     
-    print("moreMoreComputeLowerSums -> outputs dict, {}".format(outputs.keys()))
+    #print("moreMoreComputeLowerSums -> outputs dict, {}".format(outputs.keys()))
     max_score = max(list(outputs.keys()))
     return max_score, outputs[max_score]
 
@@ -120,15 +129,26 @@ def main_run():
             slices_in_pizza.reverse()
             print("slices_in_pizza: \n{}".format(slices_in_pizza))
 
-            max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, 0, slices_in_pizza)
-            #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, slices_in_pizza)
+            max_score, pizza_no_chosen = moreMoreComputeLowerSums(max_slices, slices_in_pizza)
+            #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, 0, slices_in_pizza)
             #max_score, pizza_no_chosen = computeHigherSums(max_slices, slices_in_pizza)
             print("score: {}".format(max_score))
     except IOError:
         print("!!! {}.in NOT FOUND IN INPUT FOLDER !!!".format(inputName))
         exit()
 
-    save_file(pizza_no_chosen, inputName, max_score)
+    print("pizza_no_chosen: {}".format(pizza_no_chosen))
+
+    output_keys = []
+    print("list(pizza_no_chosen.keys()): {}".format(list(pizza_no_chosen.keys())))
+    output_keys_reveesed = list(pizza_no_chosen.keys())
+    for i in range(0, len(output_keys_reveesed)):
+        new = len(slices_in_pizza)-output_keys_reveesed[i]-1
+        #print("new: {}".format(new))
+        output_keys.append(new)
+
+    print(output_keys.reverse())
+    save_file(output_keys, inputName, max_score)
     
 if __name__ == "__main__":
     main_run()
