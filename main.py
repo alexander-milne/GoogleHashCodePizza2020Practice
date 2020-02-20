@@ -136,13 +136,25 @@ def main_run():
             slices_in_pizza.reverse()
             #print("slices_in_pizza: \n{}".format(slices_in_pizza))
 
-            #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, 0, slices_in_pizza)
             max_score, pizza_no_chosen = moreMoreComputeLowerSums(max_slices, slices_in_pizza)
+            #max_score, pizza_no_chosen = moreComputeLowerSums(max_slices, 0, slices_in_pizza)
             #max_score, pizza_no_chosen = computeHigherSums(max_slices, slices_in_pizza)
-            #print("score: {}".format(max_score))
+            print("score: {}".format(max_score))
+
     except IOError:
         print("!!! {}.in NOT FOUND IN INPUT FOLDER !!!".format(inputName))
         exit()
+
+    output_keys = []
+    print("list(pizza_no_chosen.keys()): {}".format(list(pizza_no_chosen.keys())))
+    output_keys_reveesed = list(pizza_no_chosen.keys())
+    for i in range(0, len(output_keys_reveesed)):
+        new = len(slices_in_pizza)-output_keys_reveesed[i]-1
+        #print("new: {}".format(new))
+        output_keys.append(new)
+
+    output_keys.reverse()
+    save_file(output_keys, inputName, max_score)
 
     save_file(pizza_no_chosen, inputName, max_score)
     
